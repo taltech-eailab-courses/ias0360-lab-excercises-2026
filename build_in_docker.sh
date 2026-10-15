@@ -59,7 +59,13 @@ fi
 if [[ "${ARG}" == "rebuild" ]]; then
     echo "Rebuild requested: removing existing containers and image..."
 
-    mapfile -t existing_containers < <(docker ps -aq --filter "ancestor=${IMAGE_NAME}")
+    # `mapfile` is a Bash 4+ builtin, unavailable on macOS's stock /bin/bash
+    # (still 3.2, Apple's last GPLv2 release) - build the array by hand
+    # instead so this keeps working there too.
+    existing_containers=()
+    while IFS= read -r container_id; do
+        [[ -n "${container_id}" ]] && existing_containers+=("${container_id}")
+    done < <(docker ps -aq --filter "ancestor=${IMAGE_NAME}")
     if [[ ${#existing_containers[@]} -gt 0 ]]; then
         docker rm -f "${existing_containers[@]}" >/dev/null
     fi
@@ -86,12 +92,12 @@ echo "Creating and starting container '${CONTAINER_NAME}'..."
 exec docker run -it --rm \
     --name "${CONTAINER_NAME}" \
     --privileged \
-    -p 8888:8888 \
     -e "HOST_UID=$(id -u)" \
     -e "HOST_GID=$(id -g)" \
     -v "${SCRIPT_DIR}:${CONTAINER_HOME}" \
     -v /Volumes:/Volumes \
     -v /dev/bus/usb:/dev/bus/usb \
     -w "${CONTAINER_HOME}" \
+    -p 8888:8888 \
     "${IMAGE_NAME}" \
     bash

@@ -62,7 +62,9 @@ RUN git clone --branch "${PICOTOOL_VERSION}" --depth 1 https://github.com/raspbe
 WORKDIR /root
 
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
-RUN chmod +x /usr/local/bin/entrypoint.sh
+RUN chmod 755 /usr/local/bin/entrypoint.sh
 
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+
+EXPOSE 8888
 CMD ["/bin/bash"]

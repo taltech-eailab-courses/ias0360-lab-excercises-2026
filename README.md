@@ -124,6 +124,6 @@ To launch notebooks, from inside the container:
 jupyter lab --ip=0.0.0.0 --no-browser --allow-root
 ```
 
-Since `build_in_docker.sh` runs the container with `--network host`, no port mapping is needed - open the `localhost:8888` URL it prints directly in your host browser. Alternatively, attach VS Code to the running container ("Dev Containers: Attach to Running Container") and point its Jupyter extension at that same server as a remote kernel.
+`build_in_docker.sh` publishes the container's port 8888 to the same port on your host (`-p 8888:8888`), so once Jupyter prints its URL, open `localhost:8888` directly in your host browser - no extra setup needed, and this works the same on Linux, macOS, and Windows. Alternatively, attach VS Code to the running container ("Dev Containers: Attach to Running Container") and point its Jupyter extension at that same server as a remote kernel.
 
 Use `xxd -i model.tflite > model.h` to turn a converted `.tflite` model into a C byte array for embedding in a Pico firmware project.
