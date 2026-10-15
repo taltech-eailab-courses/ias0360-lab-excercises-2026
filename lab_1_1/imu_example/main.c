@@ -5,7 +5,7 @@
 #include "pico/multicore.h"     // only used by main_4
 #include "pico/util/queue.h"    // only used by main_4
 
-int main_1(void)
+int main(void)
 {
     stdio_init_all();
 

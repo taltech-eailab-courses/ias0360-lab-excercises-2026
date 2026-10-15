@@ -95,6 +95,7 @@ exec docker run -it --rm \
     -e "HOST_UID=$(id -u)" \
     -e "HOST_GID=$(id -g)" \
     -v "${SCRIPT_DIR}:${CONTAINER_HOME}" \
+    -v /Volumes:/Volumes \
     -v /dev/bus/usb:/dev/bus/usb \
     -w "${CONTAINER_HOME}" \
     -p 8888:8888 \
